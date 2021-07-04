@@ -54,11 +54,11 @@ class CashCalculator(Calculator):
         cur = ['rub', 'usd', 'eur']
         amount = self.get_today_stats()
         cash_remained = self.limit - amount
-        cash_remained_rub = round(cash_remained, 2)
+        cash_remained_rub = abs(round(cash_remained, 2))
         cash_remained_usd = \
-            round((cash_remained / CashCalculator.USD_RATE), 2)
+            abs(round((cash_remained / CashCalculator.USD_RATE), 2))
         cash_remained_euro = \
-            round((cash_remained / CashCalculator.EURO_RATE), 2)
+            abs(round((cash_remained / CashCalculator.EURO_RATE), 2))
         if currency == cur[0]:
             if self.limit > amount:
                 return f'На сегодня осталось {cash_remained_rub} руб'
@@ -66,7 +66,7 @@ class CashCalculator(Calculator):
                 return 'Денег нет, держись'
             else:
                 return 'Денег нет, держись: твой долг -' \
-                       f' {abs(cash_remained_rub)} руб'
+                       f' {cash_remained_rub} руб'
         elif currency == cur[1]:
             if self.limit > amount:
                 return f'На сегодня осталось {cash_remained_usd} USD'
@@ -74,7 +74,7 @@ class CashCalculator(Calculator):
                 return 'Денег нет, держись'
             else:
                 return 'Денег нет, держись: твой долг -' \
-                       f' {abs(cash_remained_usd)} USD'
+                       f' {(cash_remained_usd)} USD'
         elif currency == cur[2]:
             if self.limit > amount:
                 return f'На сегодня осталось {cash_remained_euro} Euro'
@@ -82,7 +82,7 @@ class CashCalculator(Calculator):
                 return 'Денег нет, держись'
             else:
                 return 'Денег нет, держись: твой долг -' \
-                       f' {abs(cash_remained_euro)} Euro'
+                       f' {cash_remained_euro} Euro'
         else:
             return 'Невалидная валюта. Валидная валюта - "rub", "usd", "eur"'
 
