@@ -43,6 +43,10 @@ class Calculator:
                 week_stats += record.amount
         return week_stats
 
+    def get_remained_amount(self) -> int:
+        remained_amount = self.limit - self.get_today_stats()
+        return remained_amount
+
 
 class CashCalculator(Calculator):
     USD_RATE = 70.0
@@ -52,33 +56,32 @@ class CashCalculator(Calculator):
         """Метод определяет, сколько ещё денег можно
         потратить сегодня в рублях, долларах или евро"""
         cur = ['rub', 'usd', 'eur']
-        amount = self.get_today_stats()
-        cash_remained = self.limit - amount
+        cash_remained = self.get_remained_amount()
         cash_remained_rub = abs(round(cash_remained, 2))
         cash_remained_usd = \
             abs(round((cash_remained / CashCalculator.USD_RATE), 2))
         cash_remained_euro = \
             abs(round((cash_remained / CashCalculator.EURO_RATE), 2))
         if currency == cur[0]:
-            if self.limit > amount:
+            if cash_remained > 0:
                 return f'На сегодня осталось {cash_remained_rub} руб'
-            elif self.limit == amount:
+            elif cash_remained == 0:
                 return 'Денег нет, держись'
             else:
                 return 'Денег нет, держись: твой долг -' \
                        f' {cash_remained_rub} руб'
         elif currency == cur[1]:
-            if self.limit > amount:
+            if cash_remained > 0:
                 return f'На сегодня осталось {cash_remained_usd} USD'
-            elif self.limit == amount:
+            elif cash_remained == 0:
                 return 'Денег нет, держись'
             else:
                 return 'Денег нет, держись: твой долг -' \
                        f' {(cash_remained_usd)} USD'
         elif currency == cur[2]:
-            if self.limit > amount:
+            if cash_remained > 0:
                 return f'На сегодня осталось {cash_remained_euro} Euro'
-            elif self.limit == amount:
+            elif self.get_remained_amount() == 0:
                 return 'Денег нет, держись'
             else:
                 return 'Денег нет, держись: твой долг -' \
@@ -92,8 +95,8 @@ class CaloriesCalculator(Calculator):
     def get_calories_remained(self) -> str:
         """Метод определяет, сколько ещё
         калорий можно/нужно получить сегодня"""
-        calories_remained = self.limit - self.get_today_stats()
-        if self.limit > self.get_today_stats():
+        calories_remained = self.get_remained_amount()
+        if self.get_remained_amount() > 0:
             return 'Сегодня можно съесть что-нибудь ещё, но с ' \
                    f'общей калорийностью не более {calories_remained} кКал'
         else:
