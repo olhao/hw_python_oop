@@ -48,9 +48,6 @@ class CashCalculator(Calculator):
     USD_RATE = 70.0
     EURO_RATE = 85.0
 
-    def __init__(self, limit: int):
-        super().__init__(limit)
-
     def get_today_cash_remained(self, currency: str) -> str:
         """Метод определяет, сколько ещё денег можно
         потратить сегодня в рублях, долларах или евро"""
@@ -91,8 +88,6 @@ class CashCalculator(Calculator):
 
 
 class CaloriesCalculator(Calculator):
-    def __init__(self, limit):
-        super().__init__(limit, )
 
     def get_calories_remained(self) -> str:
         """Метод определяет, сколько ещё
