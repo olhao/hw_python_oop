@@ -26,10 +26,8 @@ class Calculator:
         """Метод считает на сегодня,
         сколько денег потрачено/калорий уже съедено"""
         current_day = datetime.now().date()
-        today_stats = 0
-        for record in self.records:
-            if record.date == current_day:
-                today_stats += record.amount
+        today_stats = sum([record.amount for record in self.records
+                           if record.date == current_day])
         return today_stats
 
     def get_week_stats(self) -> int:
