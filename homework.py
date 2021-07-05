@@ -1,3 +1,4 @@
+import datetime as dt
 from datetime import datetime
 from datetime import timedelta
 from typing import Optional
@@ -8,7 +9,7 @@ class Record:
         self.amount = amount
         self.comment = comment
         if date is None:
-            self.date = datetime.now().date()
+            self.date = dt.date.today()
         else:
             self.date = datetime.strptime(str(date), '%d.%m.%Y').date()
 
@@ -25,7 +26,7 @@ class Calculator:
     def get_today_stats(self) -> int:
         """Метод считает на сегодня,
         сколько денег потрачено/калорий уже съедено"""
-        current_day = datetime.now().date()
+        current_day = dt.date.today()
         today_stats = sum([record.amount for record in self.records
                            if record.date == current_day])
         return today_stats
@@ -33,8 +34,8 @@ class Calculator:
     def get_week_stats(self) -> int:
         """Метод считает за последние 7 дней,
         сколько денег потрачено/сколько калорий получено"""
-        last_week = datetime.now().date() - timedelta(weeks=1)
-        today = datetime.now().date()
+        last_week = dt.date.today() - timedelta(weeks=1)
+        today = dt.date.today()
         week_stats = 0
         for record in self.records:
             if last_week < record.date <= today:
