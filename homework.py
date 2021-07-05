@@ -55,37 +55,22 @@ class CashCalculator(Calculator):
     def get_today_cash_remained(self, currency: str) -> str:
         """Метод определяет, сколько ещё денег можно
         потратить сегодня в рублях, долларах или евро"""
-        cur = ['rub', 'usd', 'eur']
+        cur = {'rub': ('руб', 1),
+               'usd': ('USD', CashCalculator.USD_RATE),
+               'eur': ('Euro', CashCalculator.EURO_RATE)}
         cash_remained = self.get_remained_amount()
-        cash_remained_rub = abs(round(cash_remained, 2))
-        cash_remained_usd = \
-            abs(round((cash_remained / CashCalculator.USD_RATE), 2))
-        cash_remained_euro = \
-            abs(round((cash_remained / CashCalculator.EURO_RATE), 2))
-        if currency == cur[0]:
+
+        if currency in cur.keys():
+            cash_remained_cur = \
+                abs(round((cash_remained / cur[currency][1]), 2))
             if cash_remained > 0:
-                return f'На сегодня осталось {cash_remained_rub} руб'
+                return (f'На сегодня осталось {cash_remained_cur} '
+                        f'{cur[currency][0]}')
             elif cash_remained == 0:
                 return 'Денег нет, держись'
             else:
                 return('Денег нет, держись: твой долг -'
-                       f' {cash_remained_rub} руб')
-        elif currency == cur[1]:
-            if cash_remained > 0:
-                return f'На сегодня осталось {cash_remained_usd} USD'
-            elif cash_remained == 0:
-                return 'Денег нет, держись'
-            else:
-                return('Денег нет, держись: твой долг -'
-                       f' {(cash_remained_usd)} USD')
-        elif currency == cur[2]:
-            if cash_remained > 0:
-                return f'На сегодня осталось {cash_remained_euro} Euro'
-            elif self.get_remained_amount() == 0:
-                return 'Денег нет, держись'
-            else:
-                return('Денег нет, держись: твой долг -'
-                       f' {cash_remained_euro} Euro')
+                       f' {cash_remained_cur} {cur[currency][0]}')
         else:
             return 'Невалидная валюта. Валидная валюта - "rub", "usd", "eur"'
 
