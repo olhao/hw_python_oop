@@ -68,24 +68,24 @@ class CashCalculator(Calculator):
             elif cash_remained == 0:
                 return 'Денег нет, держись'
             else:
-                return 'Денег нет, держись: твой долг -' \
-                       f' {cash_remained_rub} руб'
+                return('Денег нет, держись: твой долг -'
+                       f' {cash_remained_rub} руб')
         elif currency == cur[1]:
             if cash_remained > 0:
                 return f'На сегодня осталось {cash_remained_usd} USD'
             elif cash_remained == 0:
                 return 'Денег нет, держись'
             else:
-                return 'Денег нет, держись: твой долг -' \
-                       f' {(cash_remained_usd)} USD'
+                return('Денег нет, держись: твой долг -'
+                       f' {(cash_remained_usd)} USD')
         elif currency == cur[2]:
             if cash_remained > 0:
                 return f'На сегодня осталось {cash_remained_euro} Euro'
             elif self.get_remained_amount() == 0:
                 return 'Денег нет, держись'
             else:
-                return 'Денег нет, держись: твой долг -' \
-                       f' {cash_remained_euro} Euro'
+                return('Денег нет, держись: твой долг -'
+                       f' {cash_remained_euro} Euro')
         else:
             return 'Невалидная валюта. Валидная валюта - "rub", "usd", "eur"'
 
@@ -97,8 +97,8 @@ class CaloriesCalculator(Calculator):
         калорий можно/нужно получить сегодня"""
         calories_remained = self.get_remained_amount()
         if self.get_remained_amount() > 0:
-            return 'Сегодня можно съесть что-нибудь ещё, но с ' \
-                   f'общей калорийностью не более {calories_remained} кКал'
+            return('Сегодня можно съесть что-нибудь ещё, но с '
+                   f'общей калорийностью не более {calories_remained} кКал')
         else:
             return 'Хватит есть!'
 
