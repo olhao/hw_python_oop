@@ -67,7 +67,6 @@ class CashCalculator(Calculator):
                 self.settings[currency][0], self.settings[currency][1]
             cash_remained_cur = \
                 abs(round((cash_remained / currency_rate), 2))
-
             if cash_remained == 0:
                 return 'Денег нет, держись'
             if cash_remained > 0:
