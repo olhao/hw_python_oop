@@ -51,27 +51,31 @@ class CashCalculator(Calculator):
     USD_RATE = 70.0
     EURO_RATE = 85.0
 
+    @property
+    def settings(self):
+        """Метод для инициализации данных о валютах"""
+        return {'rub': ('руб', 1),
+                'usd': ('USD', CashCalculator.USD_RATE),
+                'eur': ('Euro', CashCalculator.EURO_RATE)}
+
     def get_today_cash_remained(self, currency: str) -> str:
         """Метод определяет, сколько ещё денег можно
         потратить сегодня в рублях, долларах или евро"""
-        cur = {'rub': ('руб', 1),
-               'usd': ('USD', CashCalculator.USD_RATE),
-               'eur': ('Euro', CashCalculator.EURO_RATE)}
-        cash_remained = self.get_remained_amount()
-
-        if currency in cur.keys():
+        if currency in self.settings.keys():
+            cash_remained = self.get_remained_amount()
+            currency_name, currency_rate = \
+                self.settings[currency][0], self.settings[currency][1]
             cash_remained_cur = \
-                abs(round((cash_remained / cur[currency][1]), 2))
+                abs(round((cash_remained / currency_rate), 2))
+
+            if cash_remained == 0:
+                return 'Денег нет, держись'
             if cash_remained > 0:
                 return (f'На сегодня осталось {cash_remained_cur} '
-                        f'{cur[currency][0]}')
-            elif cash_remained == 0:
-                return 'Денег нет, держись'
-            else:
-                return('Денег нет, держись: твой долг -'
-                       f' {cash_remained_cur} {cur[currency][0]}')
-        else:
-            return 'Невалидная валюта. Валидная валюта - "rub", "usd", "eur"'
+                        f'{currency_name}')
+            return('Денег нет, держись: твой долг -'
+                   f' {cash_remained_cur} {currency_name}')
+        return 'Невалидная валюта. Валидная валюта - "rub", "usd", "eur"'
 
 
 class CaloriesCalculator(Calculator):
@@ -80,11 +84,10 @@ class CaloriesCalculator(Calculator):
         """Метод определяет, сколько ещё
         калорий можно/нужно получить сегодня"""
         calories_remained = self.get_remained_amount()
-        if self.get_remained_amount() > 0:
+        if calories_remained > 0:
             return('Сегодня можно съесть что-нибудь ещё, но с '
                    f'общей калорийностью не более {calories_remained} кКал')
-        else:
-            return 'Хватит есть!'
+        return 'Хватит есть!'
 
 
 if __name__ == "__main__":
@@ -94,14 +97,14 @@ if __name__ == "__main__":
     # дата в параметрах не указана,
     # так что по умолчанию к записи
     # должна автоматически добавиться сегодняшняя дата
-    cash_calculator.add_record(Record(amount=145, comment='кофе'))
+    cash_calculator.add_record(Record(amount=150, comment='кофе'))
     # и к этой записи тоже дата должна добавиться автоматически
-    cash_calculator.add_record(Record(amount=300, comment='Серёге за обед'))
+    cash_calculator.add_record(Record(amount=30, comment='Серёге за обед'))
     # а тут пользователь указал дату, сохраняем её
-    cash_calculator.add_record(Record(amount=3000,
+    cash_calculator.add_record(Record(amount=300,
                                       comment='бар в Танин др',
                                       date='08.11.2019'))
 
-    print(cash_calculator.get_today_cash_remained('eur'))
+    print(cash_calculator.get_today_cash_remained('usd'))
     # должно напечататься
-    # На сегодня осталось 6.53 Euro
+    # На сегодня осталось 11.71 USD
