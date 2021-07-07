@@ -65,8 +65,7 @@ class CashCalculator(Calculator):
             cash_remained = self.get_remained_amount()
             if cash_remained == 0:
                 return 'Денег нет, держись'
-            currency_name, currency_rate = (
-                self.settings[currency][0], self.settings[currency][1])
+            currency_name, currency_rate = self.settings[currency]
             cash_remained_cur = (
                 abs(round((cash_remained / currency_rate), 2)))
             if cash_remained > 0:
@@ -104,6 +103,6 @@ if __name__ == "__main__":
                                       comment='бар в Танин др',
                                       date='08.11.2019'))
 
-    print(cash_calculator.get_today_cash_remained('usd'))
+    print(cash_calculator.get_today_cash_remained('eur'))
     # должно напечататься
-    # На сегодня осталось 11.71 USD
+    # На сегодня осталось 9.65 Euro
