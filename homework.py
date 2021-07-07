@@ -63,12 +63,12 @@ class CashCalculator(Calculator):
         потратить сегодня в рублях, долларах или евро"""
         if currency in self.settings.keys():
             cash_remained = self.get_remained_amount()
+            if cash_remained == 0:
+                return 'Денег нет, держись'
             currency_name, currency_rate = (
                 self.settings[currency][0], self.settings[currency][1])
             cash_remained_cur = (
                 abs(round((cash_remained / currency_rate), 2)))
-            if cash_remained == 0:
-                return 'Денег нет, держись'
             if cash_remained > 0:
                 return (f'На сегодня осталось {cash_remained_cur} '
                         f'{currency_name}')
